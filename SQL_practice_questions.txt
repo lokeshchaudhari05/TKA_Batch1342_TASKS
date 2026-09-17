@@ -1,0 +1,213 @@
+mysql> create database capgemini;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| capgemini          |
+| college            |
+| company_db         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| practice           |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use capgemini;
+Database changed
+mysql> CREATE TABLE employee(id INT PRIMARY KEY, name VARCHAR(40) NOT NULL, profile VARCHAR(10), salary INT, age INT, experience INT);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| id         | int         | NO   | PRI | NULL    |       |
+| name       | varchar(40) | NO   |     | NULL    |       |
+| profile    | varchar(10) | YES  |     | NULL    |       |
+| email      | varchar(30) | YES  | UNI | NULL    |       |
+| salary     | int         | YES  |     | NULL    |       |
+| age        | int         | YES  |     | NULL    |       |
+| experience | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql>  INSERT INTO employee(id, name, profile, email, salary, age, experience)values(1,'rani','dev','rani@gmail.com',11000,43,27),(2,'raj','test','raj@gmail.com',21000,33,17),(3,'radha','dev','radha@gmail.com',26000,38,21),(4,'raj','dev','raj12@gmail.com',51000,32,12),(5,'john','dev','john@gmail.com',51000,39,27);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++----+-------+---------+-----------------+--------+------+------------+
+| id | name  | profile | email           | salary | age  | experience |
++----+-------+---------+-----------------+--------+------+------------+
+|  1 | rani  | dev     | rani@gmail.com  |  11000 |   43 |         27 |
+|  2 | raj   | test    | raj@gmail.com   |  21000 |   33 |         17 |
+|  3 | radha | dev     | radha@gmail.com |  26000 |   38 |         21 |
+|  4 | raj   | dev     | raj12@gmail.com |  51000 |   32 |         12 |
+|  5 | john  | dev     | john@gmail.com  |  51000 |   39 |         27 |
++----+-------+---------+-----------------+--------+------+------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE employee ADD branch_location VARCHAR(50) NOT NULL;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+| id | name  | profile | email           | salary | age  | experience | branch_location |
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+|  1 | rani  | dev     | rani@gmail.com  |  11000 |   43 |         27 |                 |
+|  2 | raj   | test    | raj@gmail.com   |  21000 |   33 |         17 |                 |
+|  3 | radha | dev     | radha@gmail.com |  26000 |   38 |         21 |                 |
+|  4 | raj   | dev     | raj12@gmail.com |  51000 |   32 |         12 |                 |
+|  5 | john  | dev     | john@gmail.com  |  51000 |   39 |         27 |                 |
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE employee SET branch_location = 'Mumbai'     WHERE id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE employee SET branch_location = 'Pune'       WHERE id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE employee SET branch_location = 'Bangalore'  WHERE id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE employee SET branch_location = 'Delhi'      WHERE id = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE employee SET branch_location = 'Hyderabad'  WHERE id = 5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+| id | name  | profile | email           | salary | age  | experience | branch_location |
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+|  1 | rani  | dev     | rani@gmail.com  |  11000 |   43 |         27 | Mumbai          |
+|  2 | raj   | test    | raj@gmail.com   |  21000 |   33 |         17 | Pune            |
+|  3 | radha | dev     | radha@gmail.com |  26000 |   38 |         21 | Bangalore       |
+|  4 | raj   | dev     | raj12@gmail.com |  51000 |   32 |         12 | Delhi           |
+|  5 | john  | dev     | john@gmail.com  |  51000 |   39 |         27 | Hyderabad       |
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+
+
+mysql>  SELECT SUM(salary) AS Total_salary_expenses from employee;
++-----------------------+
+| Total_salary_expenses |
++-----------------------+
+|                160000 |
++-----------------------+
+
+
+mysql>  SELECT MAX(salary) AS MAX_SALARY from employee;
++------------+
+| MAX_SALARY |
++------------+
+|      51000 |
++------------+
+
+
+mysql>  SELECT AVG(experience) AS AVG_EXPERIENCE from employee;
++----------------+
+| AVG_EXPERIENCE |
++----------------+
+|        20.8000 |
++----------------+
+
+mysql> SELECT name, salary from employee where salary = (SELECT MAX(salary) from employee)
+    -> ;
++------+--------+
+| name | salary |
++------+--------+
+| raj  |  51000 |
+| john |  51000 |
++------+--------+
+
+mysql> SELECT name, experience from employee where salary = (SELECT MIN(salary) from employee);
++------+------------+
+| name | experience |
++------+------------+
+| rani |         27 |
++------+------------+
+
+mysql> SELECT COUNT(*) from employee;
++----------+
+| COUNT(*) |
++----------+
+|        5 |
++----------+
+
+mysql> SELECT name from employee where profile= 'test' AND salary = 25000;
+Empty set (0.00 sec)
+
+mysql> UPDATE employee SET profile = 'support' where id = 3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+| id | name  | profile | email           | salary | age  | experience | branch_location |
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+|  1 | rani  | dev     | rani@gmail.com  |  11000 |   43 |         27 | Mumbai          |
+|  2 | raj   | test    | raj@gmail.com   |  21000 |   33 |         17 | Pune            |
+|  3 | radha | support | radha@gmail.com |  26000 |   38 |         21 | Bangalore       |
+|  4 | raj   | dev     | raj12@gmail.com |  51000 |   32 |         12 | Delhi           |
+|  5 | john  | dev     | john@gmail.com  |  51000 |   39 |         27 | Hyderabad       |
++----+-------+---------+-----------------+--------+------+------------+-----------------+
+
+mysql> select MAX(salary) AS second_highest_salary from employee where salary < (select MAX(salary) from employee);
++-----------------------+
+| second_highest_salary |
++-----------------------+
+|                 26000 |
++-----------------------+
+
+mysql> select MIN(salary) AS second_lowest_salary from employee where salary > (select MIN(salary) from employee);
++----------------------+
+| second_lowest_salary |
++----------------------+
+|                21000 |
++----------------------+
+
+mysql> SELECT AVG(salary) from employee where profile = 'dev';
++-------------+
+| AVG(salary) |
++-------------+
+|  37666.6667 |
++-------------+
+
+mysql> SELECT name, salary from employee where experience = (SELECT MIN(experience) from employee)
+    -> ;
++------+--------+
+| name | salary |
++------+--------+
+| raj  |  51000 |
++------+--------+
+
+mysql> SELECT name, age, salary from employee where age = (SELECT MIN(age) from employee) AND (SELECT MAX(salary) from employee) ;
++------+------+--------+
+| name | age  | salary |
++------+------+--------+
+| raj  |   32 |  51000 |
++------+------+--------+
+
+mysql> truncate table employee;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from employee;
+
+
+
+
+
+
